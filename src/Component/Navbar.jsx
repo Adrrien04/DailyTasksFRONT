@@ -1,91 +1,81 @@
-import React from 'react'
-import {
-    AppBar,
-    Toolbar,
-    Box,
-    List,
-    ListItem,
-    Typography, 
-    styled,
-    ListItemButton,
-    ListItemText,
-} from '@mui/material';
-import DrawerItem from './DrawerItem';
-import { Link } from 'react-router-dom';
-
-const StyledToolbar = styled(Toolbar) ({
-    display: 'flex',
-    justifyContent: 'space-between',
-});
-
-const ListMenu = styled(List)(({ theme }) => ({
-    display: 'none',
-    [theme.breakpoints.up("sm")] : {
-        display: "flex",
-    },
-}));
+import React, {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import logo from '../assets/logo.png';
 
 const itemList = [
-    {
-      text: "Home",
-      to: "/" 
-    },
-    {
-        text: "Quêtes",
-        to: "/quetes"
-    },
-    {
-        text: "Utilisateurs",
-        to: "/users"
-    },
-    { 
-        text: "Connexion",
-        to: "/login"
-    },
-    {
-      text: "À propos",
-      to: "/about"
-    },
-    {
-        text: "Contact",
-        to: "/contact"
-    }
+    {text: "Home", to: "/"},
+    {text: "Quêtes disponibles", to: "/quetes"},
+    {text: "Utilisateurs", to: "/users"},
+    {text: "Contact", to: "/contact"}
 ];
 
 const Navbar = () => {
-    
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            setUser(storedUser);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        setUser(null);
+        window.location.reload();
+    };
+
+    const navLinkStyle = {
+        transition: 'color 0.3s ease'
+    };
+
+    const navLinkHoverStyle = {
+        color: '#ff6600'
+    };
+
     return (
-        <AppBar component="nav" position="sticky" sx={{ backgroundColor: 'orange' }} elevation={0}>
-            <StyledToolbar>
-                <Typography variant="h6" component="h2">
-                    Daily Quests
-                </Typography>
-                <Box sx={{display: { xs: 'block', sm: 'none' } }}>
-                    <DrawerItem /> 
-                </Box>
-                <ListMenu>
-                    {itemList.map( ( item ) => {
-                        const { text } = item;
-                        return(
-                            <ListItem key={text}>
-                                <ListItemButton component={Link} to={item.to}
-                                sx={{
-                                    color: '#fff',
-                                    "&:hover": {
-                                        backgroundColor: 'transparent',
-                                        color: '#1e2a5a',
-                                    }
-                                }}
+        <nav className="navbar navbar-expand-lg navbar-light"
+             style={{backgroundColor: 'orange', height: '80px', padding: '10px 20px'}}>
+            <div className="container-fluid">
+                <Link className="navbar-brand" to="/">
+                    <img src={logo} style={{ width: '100px' }} className="img-fluid" alt="Logo"/>
+                </Link>
+
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                </button>
+                <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul className="navbar-nav">
+                        {itemList.map((item) => (
+                            <li className="nav-item" key={item.text}>
+                                <Link
+                                    className="nav-link"
+                                    to={item.to}
+                                    style={navLinkStyle}
+                                    onMouseEnter={(e) => e.target.style.color = navLinkHoverStyle.color}
+                                    onMouseLeave={(e) => e.target.style.color = ''}
                                 >
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        )
-                    })}
-                </ListMenu>
-            </StyledToolbar>
-        </AppBar>
-    )
-}
+                                    {item.text}
+                                </Link>
+                            </li>
+                        ))}
+                        <li className="nav-item">
+                            {user ? (
+                                <button className="btn btn-outline-danger" onClick={handleLogout}>
+                                    Se déconnecter
+                                </button>
+                            ) : (
+                                <Link className="btn btn-outline-light" to="/login">
+                                    Se connecter
+                                </Link>
+                            )}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    );
+};
 
 export default Navbar;
