@@ -54,3 +54,7 @@ REACT_APP_API=http://localhost:8000
 ```
  
 Le frontend sera accessible sur [http://localhost:3000]
+![](https://i.ibb.co/xgJTPbB/Capture-d-cran-2025-01-17-214620.png)
+![](https://i.ibb.co/pWpfSrT/Capture-d-cran-2025-01-17-214951.png)
+
+
