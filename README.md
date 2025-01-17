@@ -22,14 +22,14 @@ DailyQuests est une application composée de deux parties : un frontend dévelop
  
 ```bash
 git clone https://github.com/Adrrien04/DailyTasksFRONT
-cd dailyquestsFRONT
+cd DailyTasksFRONT
 ```
  
 #### Backend
  
 ```bash
 git clone https://github.com/Adrrien04/DailyTasksBACK
-cd dailyquestsBACK
+cd DailyTasksBACK
 ```
  
 ### 2. Lancer le frontend
